@@ -65,6 +65,25 @@ export const WelcomeScreen: FC<WelcomeScreenProps> =
 
       console.log('encoded location', encodedLocation);
 
+      // fetch(`https://api.radar.io/v1/geocode/forward?query=${encodedLocation}`, {
+      //   headers: new Headers({
+      //     'Authorization': 'prj_test_pk_6c9bd026ac53aa56b33805981ffd0be33be3e7e3'
+      //   })
+      // })
+      // .then(response => response.json())
+      //   .then((coordinateResponse) => {
+      //     console.log(coordinateResponse.addresses[0].latitude);
+      //     console.log(coordinateResponse.addresses[0].longitude);
+      //     fetch(`https://records-ws.nbnatlas.org/explore/group/*?lat=${coordinateResponse.addresses[0].latitude}&lon=${coordinateResponse.addresses[0].longitude}&radius=3.0&start=0`)
+      //     .then(response => response.json())
+      //     .then((speciesInLocation) => {
+      //       console.log(speciesInLocation);
+      //       setLocalSpecies(speciesInLocation);
+      //     })
+      //   })
+      //   .catch(error => console.log(error))
+      // }
+
       fetch(`https://api.radar.io/v1/geocode/forward?query=${encodedLocation}`, {
         headers: new Headers({
           'Authorization': 'prj_test_pk_6c9bd026ac53aa56b33805981ffd0be33be3e7e3'
@@ -74,15 +93,16 @@ export const WelcomeScreen: FC<WelcomeScreenProps> =
         .then((coordinateResponse) => {
           console.log(coordinateResponse.addresses[0].latitude);
           console.log(coordinateResponse.addresses[0].longitude);
-          fetch(`https://records-ws.nbnatlas.org/explore/group/*?lat=${coordinateResponse.addresses[0].latitude}&lon=${coordinateResponse.addresses[0].longitude}&radius=3.0&start=0`)
+          fetch(`https://api.inaturalist.org/v1/observations/species_counts?photos=true&photo_licensed=true&identifications=most_agree&lat=${coordinateResponse.addresses[0].latitude}&lng=${coordinateResponse.addresses[0].longitude}&radius=1`)
           .then(response => response.json())
           .then((speciesInLocation) => {
-            console.log(speciesInLocation);
-            setLocalSpecies(speciesInLocation);
+            console.log(speciesInLocation.results);
+            let first50Species = speciesInLocation.results.slice(0,50);
+            setLocalSpecies(first50Species);
           })
         })
         .catch(error => console.log(error))
-    }
+      }
 
     return (
       <DrawerLayout
@@ -130,13 +150,21 @@ export const WelcomeScreen: FC<WelcomeScreenProps> =
             <>
               <Text>We have species!</Text>
               <FlatList
+                limit={50}
                 data={localSpecies}
                 renderItem={({ item }) =>
                   <View>
-                    <Text>{`${item.commonName ? item.commonName : '(no common name provided)'} / ${item.name} of the ${item.kingdom} kingdom`}</Text>
+                    <Image
+                      style={{ height: 200, width: 200 }}
+                      source={{
+                        uri: item.taxon.default_photo.square_url
+                      }}
+                      accessibilityLabel={item.taxon.preferred_common_name}
+                    />
+                    <Text>{`${item.taxon.preferred_common_name ? item.taxon.preferred_common_name : '(no common name provided)'} / ${item.taxon.name} of the ${item.iconic_taxon_name} kingdom`}</Text>
                   </View>  
                 }
-                keyExtractor={(item) => item.name}
+                keyExtractor={(item) => item.id}
               />
             </>
           )}
