@@ -10,10 +10,13 @@ import {
   TextStyle,
   View,
   ViewStyle,
+  Button,
+  TouchableOpacity,
+  ListRenderItem
 } from "react-native"
-import { DrawerLayout, DrawerState } from "react-native-gesture-handler"
+import { DrawerLayout, DrawerState, TextInput } from "react-native-gesture-handler"
 import { useSharedValue, withTiming } from "react-native-reanimated"
-import { ListItem, Screen, Text } from "../components"
+import { ListItem, Screen, Text, TextField } from "../components"
 import { isRTL } from "../i18n"
 import { DemoTabParamList, DemoTabScreenProps } from "../navigators/DemoNavigator"
 import { colors, spacing } from "../theme"
@@ -22,6 +25,7 @@ import * as Demos from "./DemoShowroomScreen/demos"
 import { DrawerIconButton } from "./DemoShowroomScreen/DrawerIconButton"
 
 import { AppStackScreenProps } from "../navigators" // @demo remove-current-line
+import ja from "date-fns/locale/ja/index"
 
 interface WelcomeScreenProps extends AppStackScreenProps<"Welcome"> {}
 
@@ -35,7 +39,6 @@ export const WelcomeScreen: FC<WelcomeScreenProps> =
     const listRef = useRef<SectionList>()
     const progress = useSharedValue(0)
 
-
     const toggleDrawer = () => {
       if (!open) {
         setOpen(true)
@@ -46,37 +49,40 @@ export const WelcomeScreen: FC<WelcomeScreenProps> =
       }
     }
 
-    const handleScroll = (sectionIndex: number, itemIndex = 0) => {
-      listRef.current.scrollToLocation({
-        animated: true,
-        itemIndex,
-        sectionIndex,
-      })
-      toggleDrawer()
-    }
-
-    // const scrollToIndexFailed = (info: {
-    //   index: number
-    //   highestMeasuredFrameIndex: number
-    //   averageItemLength: number
-    // }) => {
-    //   listRef.current?.getScrollResponder()?.scrollToEnd()
-    //   timeout.current = setTimeout(
-    //     () =>
-    //       listRef.current?.scrollToLocation({
-    //         animated: true,
-    //         itemIndex: info.index,
-    //         sectionIndex: 0,
-    //       }),
-    //     50,
-    //   )
-    // }
-
     useEffect(() => {
       return () => timeout.current && clearTimeout(timeout.current)
     }, [])
 
     const $drawerInsets = useSafeAreaInsetsStyle(["top"])
+
+    const [location, setLocation] = useState('');
+    const [localSpecies, setLocalSpecies] = useState([]);
+
+    const sendLocation = () => {
+
+      console.log('location on submit', location);
+      let encodedLocation = encodeURIComponent(location);
+
+      console.log('encoded location', encodedLocation);
+
+      fetch(`https://api.radar.io/v1/geocode/forward?query=${encodedLocation}`, {
+        headers: new Headers({
+          'Authorization': 'prj_test_pk_6c9bd026ac53aa56b33805981ffd0be33be3e7e3'
+        })
+      })
+      .then(response => response.json())
+        .then((coordinateResponse) => {
+          console.log(coordinateResponse.addresses[0].latitude);
+          console.log(coordinateResponse.addresses[0].longitude);
+          fetch(`https://records-ws.nbnatlas.org/explore/group/*?lat=${coordinateResponse.addresses[0].latitude}&lon=${coordinateResponse.addresses[0].longitude}&radius=3.0&start=0`)
+          .then(response => response.json())
+          .then((speciesInLocation) => {
+            console.log(speciesInLocation);
+            setLocalSpecies(speciesInLocation);
+          })
+        })
+        .catch(error => console.log(error))
+    }
 
     return (
       <DrawerLayout
@@ -101,6 +107,54 @@ export const WelcomeScreen: FC<WelcomeScreenProps> =
             <View style={$logoContainer}>
               <Image source={logo} style={$logoImage} />
             </View>
+          </View>
+        )}
+      >
+        <Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$screenContainer}>
+          <DrawerIconButton onPress={toggleDrawer} {...{ open, progress }} />
+          <Text>Wildlife App Welcome Screen</Text>
+          <Text>~~~</Text>
+          <Text>https://api.nbnatlas.org/#ws78 API - species occurrence in radius of coordinates</Text>
+
+          <TextField onChangeText={textLocation => {setLocation(textLocation)}}/>
+          <Text>This is the current location state: {`${location}`}</Text>
+          <Button
+            title="Go!"
+            onPress={sendLocation}
+          />
+
+          <View>
+          {localSpecies.length === 0 ? (
+            <Text>Waiting for species...</Text>
+          ) : (
+            <>
+              <Text>We have species!</Text>
+              <FlatList
+                data={localSpecies}
+                renderItem={({ item }) =>
+                  <View>
+                    <Text>{`${item.commonName ? item.commonName : '(no common name provided)'} / ${item.name} of the ${item.kingdom} kingdom`}</Text>
+                  </View>  
+                }
+                keyExtractor={(item) => item.name}
+              />
+            </>
+          )}
+          </View>
+        </Screen>
+
+
+
+              {/* <FlatList<{commonName: string, name: string, kingdom: string}>
+                data={localSpecies.map(ja) => {
+                  commonName: localSpeciesItem.commonName,
+                  name: localSpeciesItem.name,
+                  kingdom: localSpeciesItem.kingdom,
+                }}
+                renderItem={(localSpeciesItem) => {
+                  <Text>{localSpeciesItem.commonName}</Text>
+                }}
+              /> */}
 
             {/* <FlatList<{ name: string; useCases: string[] }>
               ref={menuRef}
@@ -114,38 +168,10 @@ export const WelcomeScreen: FC<WelcomeScreenProps> =
                 <ShowroomListItem {...{ item, sectionIndex, handleScroll }} />
               )}
             /> */}
-          </View>
-        )}
-      >
-        <Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$screenContainer}>
-          <DrawerIconButton onPress={toggleDrawer} {...{ open, progress }} />
 
-          {/* <SectionList
-            ref={listRef}
-            contentContainerStyle={$sectionListContentContainer}
-            stickySectionHeadersEnabled={false}
-            sections={Object.values(Demos)}
-            renderItem={({ item }) => item}
-            renderSectionFooter={() => <View style={$demoUseCasesSpacer} />}
-            ListHeaderComponent={
-              <View style={$heading}>
-                <Text preset="heading" tx="demoShowroomScreen.jumpStart" />
-              </View>
-            }
-            onScrollToIndexFailed={scrollToIndexFailed}
-            renderSectionHeader={({ section }) => {
-              return (
-                <View>
-                  <Text preset="heading" style={$demoItemName}>
-                    {section.name}
-                  </Text>
-                  <Text style={$demoItemDescription}>{section.description}</Text>
-                </View>
-              )
-            }}
-          /> */}
-          <Text>Wildlife App Welcome Screen</Text>
-        </Screen>
+            
+          
+
       </DrawerLayout>
     )
   }
