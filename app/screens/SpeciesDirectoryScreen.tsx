@@ -27,12 +27,14 @@ import { DrawerIconButton } from "./DemoShowroomScreen/DrawerIconButton"
 import { AppStackScreenProps } from "../navigators" // @demo remove-current-line
 import ja from "date-fns/locale/ja/index"
 
-interface SpeciesDirectoryScreenProps extends AppStackScreenProps<"SpeciesDirectoryScreen"> {}
+interface SpeciesDirectoryScreenProps extends AppStackScreenProps<"SpeciesDirectoryScreen"> {
+  Location: string
+}
 
 const logo = require("../../assets/images/logo.png")
 
 export const SpeciesDirectoryScreen: FC<SpeciesDirectoryScreenProps> =
-  function SpeciesDirectoryScreen(_props) {
+  function SpeciesDirectoryScreen({ route }, _props) {
     const [open, setOpen] = useState(false)
     const timeout = useRef<ReturnType<typeof setTimeout>>()
     const drawerRef = useRef<DrawerLayout>()
@@ -50,13 +52,15 @@ export const SpeciesDirectoryScreen: FC<SpeciesDirectoryScreenProps> =
     }
 
     useEffect(() => {
-      return () => timeout.current && clearTimeout(timeout.current)
+      // return () => timeout.current && clearTimeout(timeout.current)
+      sendLocation();
     }, [])
 
     const $drawerInsets = useSafeAreaInsetsStyle(["top"])
 
-    const [location, setLocation] = useState('');
+    const [location, setLocation] = useState(route.params.Location);
     const [localSpecies, setLocalSpecies] = useState([]);
+    const [modalVisible, setModalVisible] = useState(false);
 
     const sendLocation = () => {
       let encodedLocation = encodeURIComponent(location);
@@ -120,21 +124,44 @@ export const SpeciesDirectoryScreen: FC<SpeciesDirectoryScreenProps> =
                 data={localSpecies}
                 renderItem={({ item }) =>
                   <View>
-                    <Image
-                      style={{ height: 200, width: 200 }}
-                      source={{
-                        uri: item.taxon.default_photo.square_url
-                      }}
-                      accessibilityLabel={item.taxon.preferred_common_name}
-                    />
-                    <Text>{`${item.taxon.preferred_common_name ? item.taxon.preferred_common_name : '(no common name provided)'} / ${item.taxon.name} of the ${item.taxon.iconic_taxon_name} kingdom`}</Text>
+                    <TouchableOpacity
+                      onPress={() => setModalVisible(true)}
+                    >
+                      <Image
+                        style={{ height: 200, width: 200 }}
+                        source={{
+                          uri: item.taxon.default_photo.square_url
+                        }}
+                        accessibilityLabel={item.taxon.preferred_common_name}
+                      />
+                      <Text>{`${item.taxon.preferred_common_name ? item.taxon.preferred_common_name : '(no common name provided)'} / ${item.taxon.name} of the ${item.taxon.iconic_taxon_name} kingdom`}</Text>
+                    </TouchableOpacity>
                   </View>  
                 }
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item) => item.taxon.id}
               />
             </>
           )}
           </View>
+          {modalVisible && <View
+            style= {{
+              position: 'absolute',
+              height: '90%',
+              width: '90%',
+              flex: 1,
+              margin: '5%',
+              backgroundColor: 'white'
+            }}
+          >
+            <Text
+              onPress={() => setModalVisible(false)}
+            >
+                X
+            </Text>
+            <Text>I am the modal</Text>
+          </View>
+          }
+          
         </Screen>
 
 

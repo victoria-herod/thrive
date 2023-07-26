@@ -39,7 +39,7 @@ export type AppStackParamList = {
   Login: undefined // @demo remove-current-line
   Demo: NavigatorScreenParams<DemoTabParamList> // @demo remove-current-line
   // 🔥 Your screens go here
-  SpeciesDirectory: undefined
+  SpeciesDirectory: {data: Location}
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 

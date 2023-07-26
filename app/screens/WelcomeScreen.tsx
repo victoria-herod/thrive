@@ -57,28 +57,28 @@ export const WelcomeScreen: FC<WelcomeScreenProps> =
     const $drawerInsets = useSafeAreaInsetsStyle(["top"])
 
     const [location, setLocation] = useState('');
-    const [localSpecies, setLocalSpecies] = useState([]);
+    // const [localSpecies, setLocalSpecies] = useState([]);
 
-    const sendLocation = () => {
-      let encodedLocation = encodeURIComponent(location);
+    // const sendLocation = () => {
+    //   let encodedLocation = encodeURIComponent(location);
 
-      fetch(`https://api.radar.io/v1/geocode/forward?query=${encodedLocation}`, {
-        headers: new Headers({
-          'Authorization': 'prj_test_pk_6c9bd026ac53aa56b33805981ffd0be33be3e7e3'
-        })
-      })
-      .then(response => response.json())
-        .then((coordinateResponse) => {
-          fetch(`https://api.inaturalist.org/v1/observations/species_counts?photos=true&photo_licensed=true&identifications=most_agree&lat=${coordinateResponse.addresses[0].latitude}&lng=${coordinateResponse.addresses[0].longitude}&radius=1`)
-          .then(response => response.json())
-          .then((speciesInLocation) => {
-            console.log(speciesInLocation.results);
-            let first50Species = speciesInLocation.results.slice(0,50);
-            setLocalSpecies(first50Species);
-          })
-        })
-        .catch(error => console.log(error))
-      }
+    //   fetch(`https://api.radar.io/v1/geocode/forward?query=${encodedLocation}`, {
+    //     headers: new Headers({
+    //       'Authorization': 'prj_test_pk_6c9bd026ac53aa56b33805981ffd0be33be3e7e3'
+    //     })
+    //   })
+    //   .then(response => response.json())
+    //     .then((coordinateResponse) => {
+    //       fetch(`https://api.inaturalist.org/v1/observations/species_counts?photos=true&photo_licensed=true&identifications=most_agree&lat=${coordinateResponse.addresses[0].latitude}&lng=${coordinateResponse.addresses[0].longitude}&radius=1`)
+    //       .then(response => response.json())
+    //       .then((speciesInLocation) => {
+    //         console.log(speciesInLocation.results);
+    //         let first50Species = speciesInLocation.results.slice(0,50);
+    //         setLocalSpecies(first50Species);
+    //       })
+    //     })
+    //     .catch(error => console.log(error))
+    //   }
 
     return (
       <DrawerLayout
@@ -116,7 +116,10 @@ export const WelcomeScreen: FC<WelcomeScreenProps> =
           {/* <Text>This is the current location state: {`${location}`}</Text> */}
           <Button
             title="Go!"
-            onPress={() => {navigation.navigate('SpeciesDirectory')}}
+            onPress={() => navigation.navigate('SpeciesDirectory', {
+              Location: location,
+            })}
+            // onPress={sendLocation}
             disabled={location.length === 0}
           />
 
