@@ -27,19 +27,31 @@ import { DrawerIconButton } from "./DemoShowroomScreen/DrawerIconButton"
 import { AppStackScreenProps } from "../navigators" // @demo remove-current-line
 import ja from "date-fns/locale/ja/index"
 
-interface SpeciesDirectoryScreenProps extends AppStackScreenProps<"SpeciesDirectoryScreen"> {
+import SpeciesInfoModal from "app/components/SpeciesInfoModal";
+
+interface SpeciesDirectoryScreenProps extends AppStackScreenProps<"SpeciesDirectory"> {
   Location: string
 }
 
 const logo = require("../../assets/images/logo.png")
 
 export const SpeciesDirectoryScreen: FC<SpeciesDirectoryScreenProps> =
-  function SpeciesDirectoryScreen({ route }, _props) {
+  function SpeciesDirectoryScreen(_props) {
     const [open, setOpen] = useState(false)
     const timeout = useRef<ReturnType<typeof setTimeout>>()
     const drawerRef = useRef<DrawerLayout>()
     const listRef = useRef<SectionList>()
-    const progress = useSharedValue(0)
+    const progress = useSharedValue(0);
+    const { navigation, route } = _props;
+
+    const $drawerInsets = useSafeAreaInsetsStyle(["top"])
+
+    const [userLatitude, setUserLatitude] = useState('');
+    const [userLongitude, setUserLongitude] = useState('');
+    const [location, setLocation] = useState(route.params.Location);
+    const [localSpecies, setLocalSpecies] = useState([]);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [selectedSpecies, setSelectedSpecies] = useState({});
 
     const toggleDrawer = () => {
       if (!open) {
@@ -54,13 +66,7 @@ export const SpeciesDirectoryScreen: FC<SpeciesDirectoryScreenProps> =
     useEffect(() => {
       // return () => timeout.current && clearTimeout(timeout.current)
       sendLocation();
-    }, [])
-
-    const $drawerInsets = useSafeAreaInsetsStyle(["top"])
-
-    const [location, setLocation] = useState(route.params.Location);
-    const [localSpecies, setLocalSpecies] = useState([]);
-    const [modalVisible, setModalVisible] = useState(false);
+    }, [location])
 
     const sendLocation = () => {
       let encodedLocation = encodeURIComponent(location);
@@ -72,12 +78,20 @@ export const SpeciesDirectoryScreen: FC<SpeciesDirectoryScreenProps> =
       })
       .then(response => response.json())
         .then((coordinateResponse) => {
+          setUserLatitude(coordinateResponse.addresses[0].latitude);
+          setUserLongitude(coordinateResponse.addresses[0].longitude);
           fetch(`https://api.inaturalist.org/v1/observations/species_counts?photos=true&photo_licensed=true&identifications=most_agree&lat=${coordinateResponse.addresses[0].latitude}&lng=${coordinateResponse.addresses[0].longitude}&radius=1`)
-          .then(response => response.json())
+        // })
+        .then(response => response.json())
           .then((speciesInLocation) => {
-            console.log(speciesInLocation.results);
+
+            console.log('api call- lat', userLatitude);
+            console.log('api call- long', userLongitude);
+
+            console.log('RESPONSE', speciesInLocation)
             let first50Species = speciesInLocation.results.slice(0,50);
             setLocalSpecies(first50Species);
+            console.log('first 50 species', first50Species);
           })
         })
         .catch(error => console.log(error))
@@ -111,7 +125,16 @@ export const SpeciesDirectoryScreen: FC<SpeciesDirectoryScreenProps> =
       >
         <Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$screenContainer}>
           <DrawerIconButton onPress={toggleDrawer} {...{ open, progress }} />
+          <Text
+            onPress={() => {
+              navigation.navigate('Welcome');
+              setLocation('');
+            }}
+          >
+            Home!
+          </Text>
           <Text>Wildlife App SpeciesDirectory Screen</Text>
+          <Text>Species in {location}, {userLatitude} {userLongitude}</Text>
           <Text>~~~</Text>
 
           <View>
@@ -119,18 +142,23 @@ export const SpeciesDirectoryScreen: FC<SpeciesDirectoryScreenProps> =
             <Text>Waiting for species...</Text>
           ) : (
             <>
-              <Text>We have species!</Text>
+              <Text>We have species! Userlat {userLatitude},,, {userLongitude}
+              </Text>
+              <Text>Local species length - {localSpecies.length}</Text>
               <FlatList
                 data={localSpecies}
                 renderItem={({ item }) =>
                   <View>
                     <TouchableOpacity
-                      onPress={() => setModalVisible(true)}
+                      onPress={() => {
+                        setSelectedSpecies({common_name: item.taxon.preferred_common_name, latin_name: item.taxon.name, taxon_name: item.taxon.iconic_taxon_name})
+                        setModalVisible(true);
+                      }}
                     >
                       <Image
                         style={{ height: 200, width: 200 }}
                         source={{
-                          uri: item.taxon.default_photo.square_url
+                          uri: item.taxon.default_photo.medium_url
                         }}
                         accessibilityLabel={item.taxon.preferred_common_name}
                       />
@@ -143,25 +171,25 @@ export const SpeciesDirectoryScreen: FC<SpeciesDirectoryScreenProps> =
             </>
           )}
           </View>
-          {modalVisible && <View
-            style= {{
-              position: 'absolute',
-              height: '90%',
-              width: '90%',
-              flex: 1,
-              margin: '5%',
-              backgroundColor: 'white'
-            }}
-          >
-            <Text
-              onPress={() => setModalVisible(false)}
+          {modalVisible && 
+            <View
+              style= {{
+                position: 'absolute',
+                height: '90%',
+                width: '90%',
+                flex: 1,
+                margin: '5%',
+                backgroundColor: 'white'
+              }}
             >
+              <Text
+                onPress={() => setModalVisible(false)}
+              >
                 X
-            </Text>
-            <Text>I am the modal</Text>
-          </View>
+              </Text>
+              <SpeciesInfoModal userLatitude={userLatitude} userLongitude={userLongitude} species={selectedSpecies} />
+            </View>
           }
-          
         </Screen>
 
 
