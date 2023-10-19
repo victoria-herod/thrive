@@ -69,8 +69,8 @@ export const SpeciesDirectoryScreen: FC<SpeciesDirectoryScreenProps> =
     }, [location])
 
     const sendLocation = () => {
+      
       let encodedLocation = encodeURIComponent(location);
-
       fetch(`https://api.radar.io/v1/geocode/forward?query=${encodedLocation}`, {
         headers: new Headers({
           'Authorization': 'prj_test_pk_6c9bd026ac53aa56b33805981ffd0be33be3e7e3'
@@ -84,11 +84,6 @@ export const SpeciesDirectoryScreen: FC<SpeciesDirectoryScreenProps> =
         // })
         .then(response => response.json())
           .then((speciesInLocation) => {
-
-            console.log('api call- lat', userLatitude);
-            console.log('api call- long', userLongitude);
-
-            console.log('RESPONSE', speciesInLocation)
             let first50Species = speciesInLocation.results.slice(0,50);
             setLocalSpecies(first50Species);
             console.log('first 50 species', first50Species);
