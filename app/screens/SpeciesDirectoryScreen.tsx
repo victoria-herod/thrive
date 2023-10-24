@@ -115,6 +115,12 @@ export const SpeciesDirectoryScreen: FC<SpeciesDirectoryScreenProps> =
             <View style={$logoContainer}>
               <Image source={logo} style={$logoImage} />
             </View>
+            <Button
+            title="Restart"
+            onPress={() => navigation.navigate('Welcome')}
+            // onPress={sendLocation}
+            disabled={location.length === 0}
+          />
           </View>
         )}
       >
@@ -136,14 +142,13 @@ export const SpeciesDirectoryScreen: FC<SpeciesDirectoryScreenProps> =
           {localSpecies.length === 0 ? (
             <Text>Waiting for species...</Text>
           ) : (
-            <>
-              <Text>We have species! Userlat {userLatitude},,, {userLongitude}
-              </Text>
-              <Text>Local species length - {localSpecies.length}</Text>
+            <View style={{flexWrap: 'wrap', flexDirection: 'row'}}>
               <FlatList
                 data={localSpecies}
+                numColumns={2}
+                horizontal={false}
                 renderItem={({ item }) =>
-                  <View>
+                  <View style={{width: '50%', margin: '2%'}}>
                     <TouchableOpacity
                       onPress={() => {
                         setSelectedSpecies({common_name: item.taxon.preferred_common_name, latin_name: item.taxon.name, taxon_name: item.taxon.iconic_taxon_name})
@@ -151,7 +156,7 @@ export const SpeciesDirectoryScreen: FC<SpeciesDirectoryScreenProps> =
                       }}
                     >
                       <Image
-                        style={{ height: 200, width: 200 }}
+                        style={{ height: 160, width: 'auto' }}
                         source={{
                           uri: item.taxon.default_photo.medium_url
                         }}
@@ -163,17 +168,21 @@ export const SpeciesDirectoryScreen: FC<SpeciesDirectoryScreenProps> =
                 }
                 keyExtractor={(item) => item.taxon.id}
               />
-            </>
+            </View>
           )}
           </View>
           {modalVisible && 
             <View
               style= {{
                 position: 'absolute',
-                height: '90%',
-                width: '90%',
-                flex: 1,
-                margin: '5%',
+                top: '2%',
+                left: '2%',
+                bottom: '2%',
+                right: '2%',
+                height: '95%',
+                width: '95%',
+                // flex: 1,
+                // margin: 50,
                 backgroundColor: 'white'
               }}
             >

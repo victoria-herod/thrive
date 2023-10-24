@@ -57,28 +57,6 @@ export const WelcomeScreen: FC<WelcomeScreenProps> =
     const $drawerInsets = useSafeAreaInsetsStyle(["top"])
 
     const [location, setLocation] = useState('');
-    // const [localSpecies, setLocalSpecies] = useState([]);
-
-    // const sendLocation = () => {
-    //   let encodedLocation = encodeURIComponent(location);
-
-    //   fetch(`https://api.radar.io/v1/geocode/forward?query=${encodedLocation}`, {
-    //     headers: new Headers({
-    //       'Authorization': 'prj_test_pk_6c9bd026ac53aa56b33805981ffd0be33be3e7e3'
-    //     })
-    //   })
-    //   .then(response => response.json())
-    //     .then((coordinateResponse) => {
-    //       fetch(`https://api.inaturalist.org/v1/observations/species_counts?photos=true&photo_licensed=true&identifications=most_agree&lat=${coordinateResponse.addresses[0].latitude}&lng=${coordinateResponse.addresses[0].longitude}&radius=1`)
-    //       .then(response => response.json())
-    //       .then((speciesInLocation) => {
-    //         console.log(speciesInLocation.results);
-    //         let first50Species = speciesInLocation.results.slice(0,50);
-    //         setLocalSpecies(first50Species);
-    //       })
-    //     })
-    //     .catch(error => console.log(error))
-    //   }
 
     return (
       <DrawerLayout
@@ -113,7 +91,6 @@ export const WelcomeScreen: FC<WelcomeScreenProps> =
           {/* <Text>https://api.nbnatlas.org/#ws78 API - species occurrence in radius of coordinates</Text> */}
 
           <TextField onChangeText={textLocation => {setLocation(textLocation)}}/>
-          {/* <Text>This is the current location state: {`${location}`}</Text> */}
           <Button
             title="Go!"
             onPress={() => navigation.navigate('SpeciesDirectory', {
@@ -122,63 +99,7 @@ export const WelcomeScreen: FC<WelcomeScreenProps> =
             // onPress={sendLocation}
             disabled={location.length === 0}
           />
-
-          {/* <View>
-          {localSpecies.length === 0 ? (
-            <Text>Waiting for species...</Text>
-          ) : (
-            <>
-              <Text>We have species!</Text>
-              <FlatList
-                data={localSpecies}
-                renderItem={({ item }) =>
-                  <View>
-                    <Image
-                      style={{ height: 200, width: 200 }}
-                      source={{
-                        uri: item.taxon.default_photo.square_url
-                      }}
-                      accessibilityLabel={item.taxon.preferred_common_name}
-                    />
-                    <Text>{`${item.taxon.preferred_common_name ? item.taxon.preferred_common_name : '(no common name provided)'} / ${item.taxon.name} of the ${item.taxon.iconic_taxon_name} kingdom`}</Text>
-                  </View>  
-                }
-                keyExtractor={(item) => item.id}
-              />
-            </>
-          )}
-          </View> */}
         </Screen>
-
-
-
-              {/* <FlatList<{commonName: string, name: string, kingdom: string}>
-                data={localSpecies.map(ja) => {
-                  commonName: localSpeciesItem.commonName,
-                  name: localSpeciesItem.name,
-                  kingdom: localSpeciesItem.kingdom,
-                }}
-                renderItem={(localSpeciesItem) => {
-                  <Text>{localSpeciesItem.commonName}</Text>
-                }}
-              /> */}
-
-            {/* <FlatList<{ name: string; useCases: string[] }>
-              ref={menuRef}
-              contentContainerStyle={$flatListContentContainer}
-              data={Object.values(Demos).map((d) => ({
-                name: d.name,
-                useCases: d.data.map((u) => u.props.name),
-              }))}
-              keyExtractor={(item) => item.name}
-              renderItem={({ item, index: sectionIndex }) => (
-                <ShowroomListItem {...{ item, sectionIndex, handleScroll }} />
-              )}
-            /> */}
-
-            
-          
-
       </DrawerLayout>
     )
   }
