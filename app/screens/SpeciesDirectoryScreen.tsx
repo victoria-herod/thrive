@@ -10,19 +10,17 @@ import {
   TextStyle,
   View,
   ViewStyle,
-  Button,
   TouchableOpacity,
   ListRenderItem
 } from "react-native"
 import { DrawerLayout, DrawerState, TextInput } from "react-native-gesture-handler"
 import { useSharedValue, withTiming } from "react-native-reanimated"
-import { ListItem, Screen, Text, TextField } from "../components"
+import { Screen, Text } from "../components"
 import { isRTL } from "../i18n"
-import { DemoTabParamList, DemoTabScreenProps } from "../navigators/DemoNavigator"
 import { colors, spacing } from "../theme"
 import { useSafeAreaInsetsStyle } from "../utils/useSafeAreaInsetsStyle"
-import * as Demos from "./DemoShowroomScreen/demos"
-import { DrawerIconButton } from "./DemoShowroomScreen/DrawerIconButton"
+import { DrawerIconButton } from "../components/DrawerIconButton"
+import { Button } from "../components/Button";
 
 import { AppStackScreenProps } from "../navigators" // @demo remove-current-line
 import ja from "date-fns/locale/ja/index"
@@ -33,7 +31,7 @@ interface SpeciesDirectoryScreenProps extends AppStackScreenProps<"SpeciesDirect
   Location: string
 }
 
-const logo = require("../../assets/images/logo.png")
+const logo = require("../../assets/images/thrive-icon.png")
 
 export const SpeciesDirectoryScreen: FC<SpeciesDirectoryScreenProps> =
   function SpeciesDirectoryScreen(_props) {
@@ -112,15 +110,21 @@ export const SpeciesDirectoryScreen: FC<SpeciesDirectoryScreenProps> =
         }}
         renderNavigationView={() => (
           <View style={[$drawer, $drawerInsets]}>
-            <View style={$logoContainer}>
-              <Image source={logo} style={$logoImage} />
+            <View style={{ display: 'flex', flexDirection: 'row', paddingTop: 30, paddingBottom: 30, borderBottomWidth: 2 }}>
+              <View style={$logoContainer}>
+                <Image source={logo} style={$logoImage} />
+              </View>
+            <Text
+              size="xxl" 
+              text="Thrive"
+              style={{fontStyle: "italic"}}
+            />
             </View>
             <Button
-            title="Restart"
-            onPress={() => navigation.navigate('Welcome')}
-            // onPress={sendLocation}
-            disabled={location.length === 0}
-          />
+              text="Restart"
+              onPress={() => navigation.navigate('Welcome')}
+              disabled={location.length === 0}
+            />
           </View>
         )}
       >
@@ -195,36 +199,6 @@ export const SpeciesDirectoryScreen: FC<SpeciesDirectoryScreenProps> =
             </View>
           }
         </Screen>
-
-
-
-              {/* <FlatList<{commonName: string, name: string, kingdom: string}>
-                data={localSpecies.map(ja) => {
-                  commonName: localSpeciesItem.commonName,
-                  name: localSpeciesItem.name,
-                  kingdom: localSpeciesItem.kingdom,
-                }}
-                renderItem={(localSpeciesItem) => {
-                  <Text>{localSpeciesItem.commonName}</Text>
-                }}
-              /> */}
-
-            {/* <FlatList<{ name: string; useCases: string[] }>
-              ref={menuRef}
-              contentContainerStyle={$flatListContentContainer}
-              data={Object.values(Demos).map((d) => ({
-                name: d.name,
-                useCases: d.data.map((u) => u.props.name),
-              }))}
-              keyExtractor={(item) => item.name}
-              renderItem={({ item, index: sectionIndex }) => (
-                <ShowroomListItem {...{ item, sectionIndex, handleScroll }} />
-              )}
-            /> */}
-
-            
-          
-
       </DrawerLayout>
     )
   }
@@ -251,8 +225,8 @@ const $heading: ViewStyle = {
 }
 
 const $logoImage: ImageStyle = {
-  height: 42,
-  width: 77,
+  height: 100,
+  width: 100,
 }
 
 const $logoContainer: ViewStyle = {
@@ -260,6 +234,11 @@ const $logoContainer: ViewStyle = {
   justifyContent: "center",
   height: 56,
   paddingHorizontal: spacing.lg,
+}
+
+const $logoTitle: TextStyle = {
+  fontSize: 24,
+  fontStyle: 'italic'
 }
 
 const $menuContainer: ViewStyle = {

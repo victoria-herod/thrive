@@ -7,9 +7,9 @@
     "scheme": "wildlifeapp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/app-icon-all.png",
+    "icon": "./assets/images/thrive-icon.png",
     "splash": {
-      "image": "./assets/images/splash-logo-all.png",
+      "image": "./assets/images/thrive-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#191015"
     },
@@ -21,33 +21,33 @@
       "**/*"
     ],
     "android": {
-      "icon": "./assets/images/app-icon-android-legacy.png",
+      "icon": "./assets/images/thrive-icon.png",
       "package": "com.wildlifeapp",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/app-icon-android-adaptive-foreground.png",
-        "backgroundImage": "./assets/images/app-icon-android-adaptive-background.png"
+        "foregroundImage": "./assets/images/thrive-icon.png",
+        "backgroundImage": "./assets/images/thrive-icon.png"
       },
       "splash": {
-        "image": "./assets/images/splash-logo-android-universal.png",
+        "image": "./assets/images/thrive-icon.png",
         "resizeMode": "contain",
         "backgroundColor": "#191015"
       }
     },
     "ios": {
-      "icon": "./assets/images/app-icon-ios.png",
+      "icon": "./assets/images/thrive-icon.png",
       "supportsTablet": true,
       "bundleIdentifier": "com.wildlifeapp",
       "splash": {
-        "image": "./assets/images/splash-logo-ios-mobile.png",
-        "tabletImage": "./assets/images/splash-logo-ios-tablet.png",
+        "image": "./assets/images/thrive-icon.png",
+        "tabletImage": "./assets/images/thrive-icon.png",
         "resizeMode": "contain",
         "backgroundColor": "#191015"
       }
     },
     "web": {
-      "favicon": "./assets/images/app-icon-web-favicon.png",
+      "favicon": "./assets/images/thrive-icon.png",
       "splash": {
-        "image": "./assets/images/splash-logo-web.png",
+        "image": "./assets/images/thrive-icon.png",
         "resizeMode": "contain",
         "backgroundColor": "#191015"
       }

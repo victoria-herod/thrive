@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, ScrollView, FlatList, Image, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 type SpeciesInfoModalProps = {
   userLatitude: string;

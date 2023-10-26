@@ -7,8 +7,8 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated"
 import type { SharedValue } from "react-native-reanimated"
-import { isRTL } from "../../i18n"
-import { colors, spacing } from "../../theme"
+import { isRTL } from "../i18n"
+import { colors, spacing } from "../theme"
 
 interface DrawerIconButtonProps extends PressableProps {
   open: boolean
