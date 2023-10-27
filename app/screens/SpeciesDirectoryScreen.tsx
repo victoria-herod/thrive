@@ -123,101 +123,98 @@ function SpeciesDirectoryScreen(_props) {
 			)}
 		>
 		<Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$screenContainer}>
-		<DrawerIconButton onPress={toggleDrawer} {...{ open, progress }} />
+			<DrawerIconButton onPress={toggleDrawer} {...{ open, progress }} />
 
-		<Header
-			text="Thrive"
-			image={logo}
-		/>
-
-		<Text
-			size="lg"
-			text="The enchanting creatures of..."
-		/>
-		<Text
-			size="xxl"
-			text={location}
-			style={{ fontStyle: "italic", color: colors.secondary, marginBottom: spacing.sm }}
-		/>
-
-		<View>
-			{localSpecies.length === 0 ? (
-				<Text
-					size="lg"
-					text="Waiting for species..."
-				/>
-			) : (
-				<FlatList
-					style={{ marginBottom: '30%' }}
-					data={localSpecies}
-					numColumns={2}
-					horizontal={false}
-					renderItem={({ item }) =>
-						<View style={{ width: '46%', margin: spacing.xs }}>
-							<TouchableOpacity
-								onPress={() => {
-								setSelectedSpecies({
-									common_name: item.taxon.preferred_common_name,
-									latin_name: item.taxon.name,
-									taxon_name: item.taxon.iconic_taxon_name
-								})
-								setModalVisible(true);
-								}}
-							>
-								<Image
-									style={{ height: 160, width: 'auto' }}
-									source={{
-										uri: item.taxon.default_photo.medium_url
-									}}
-									accessibilityLabel={item.taxon.preferred_common_name}
-								/>
-								{item.taxon.preferred_common_name &&
-									<Text
-										size="lg"
-										text={item.taxon.preferred_common_name}
-									/>
-								}
-								<Text
-								size="md"
-								text={item.taxon.name}
-								style={{ fontStyle: "italic", color: colors.secondary }}
-								/>
-								<Text
-								size="sm"
-								text={`of the ${item.taxon.iconic_taxon_name} kingdom`}
-								/>
-							</TouchableOpacity>
-						</View>
-					}
-					keyExtractor={(item) => item.taxon.id}
-				/>
-			)}
-		</View>
-
-		{modalVisible &&
-			<View
-				style={{
-					position: 'absolute',
-					top: '2%',
-					left: '2%',
-					bottom: '2%',
-					right: '2%',
-					height: '95%',
-					width: '95%',
-					// flex: 1,
-					// margin: 50,
-					backgroundColor: 'white'
-				}}
-			>
-			<Button
-				text="Back to results"
-				onPress={() => {
-					setModalVisible(false)
-				}}
+			<Header
+				text="Thrive"
+				image={logo}
 			/>
-			<SpeciesInfoModal userLatitude={userLatitude} userLongitude={userLongitude} species={selectedSpecies} />
+
+			<Text
+				size="lg"
+				text="The enchanting creatures of..."
+			/>
+			<Text
+				size="xxl"
+				text={location}
+				style={{ fontStyle: "italic", color: colors.secondary, marginBottom: spacing.sm }}
+			/>
+
+			<View>
+				{localSpecies.length === 0 ? (
+					<Text
+						size="lg"
+						text="Waiting for species..."
+					/>
+				) : (
+					<FlatList
+						style={{ marginBottom: '30%' }}
+						data={localSpecies}
+						numColumns={2}
+						horizontal={false}
+						renderItem={({ item }) =>
+							<View style={{ width: '46%', margin: spacing.xs }}>
+								<TouchableOpacity
+									onPress={() => {
+									setSelectedSpecies({
+										common_name: item.taxon.preferred_common_name,
+										latin_name: item.taxon.name,
+										taxon_name: item.taxon.iconic_taxon_name
+									})
+									setModalVisible(true);
+									}}
+								>
+									<Image
+										style={{ height: 160, width: 'auto' }}
+										source={{
+											uri: item.taxon.default_photo.medium_url
+										}}
+										accessibilityLabel={item.taxon.preferred_common_name}
+									/>
+									{item.taxon.preferred_common_name &&
+										<Text
+											size="lg"
+											text={item.taxon.preferred_common_name}
+										/>
+									}
+									<Text
+									size="md"
+									text={item.taxon.name}
+									style={{ fontStyle: "italic", color: colors.secondary }}
+									/>
+									<Text
+									size="sm"
+									text={`of the ${item.taxon.iconic_taxon_name} kingdom`}
+									/>
+								</TouchableOpacity>
+							</View>
+						}
+						keyExtractor={(item) => item.taxon.id}
+					/>
+				)}
 			</View>
-		}
+
+			{modalVisible &&
+				<View
+					style={{
+						position: 'absolute',
+						top: '2%',
+						left: '2%',
+						bottom: '2%',
+						right: '2%',
+						backgroundColor: colors.background
+					}}
+				>
+					<Button
+						text="Back to results"
+						onPress={() => {
+							setModalVisible(false)
+						}}
+						style={{ borderRadius: 0 }}
+					/>
+					<SpeciesInfoModal userLatitude={userLatitude} userLongitude={userLongitude} location={location} species={selectedSpecies} />
+				</View>
+			}
 		</Screen>
 	</DrawerLayout>
 	)

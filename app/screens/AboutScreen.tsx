@@ -110,7 +110,7 @@ export const AboutScreen: FC<AboutScreenProps> =
           /> 
 
           <Text style={{ margin: spacing.sm }}>
-            This app provides the exciting opportunity to get acquainted with the natural treasures of your local environment. Ever wondered what species that bird int the tree at the end of the garden is, or been fascinated by that bug that tends to pop up in summer? Enter your location below to find out about the species you share your locality with, and access the latest sightings.
+            Soon to be populated...
           </Text>
         </Screen>
       </DrawerLayout>

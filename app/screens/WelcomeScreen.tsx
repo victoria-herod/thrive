@@ -111,7 +111,7 @@ export const WelcomeScreen: FC<WelcomeScreenProps> =
               text="Thrive"
               image={logo}
             />
-            <Text style={{ margin: spacing.sm }}>
+            <Text style={{ margin: spacing.sm, marginBottom: spacing.lg }}>
               Here you have found a tool that provides the exciting opportunity to get acquainted with the natural treasures of your local environment. Ever wondered about that cool bird in the tree at the end of the garden, or been fascinated by the many strands of spring blooms? Enter your location below to find out about the species you share your locality with, and access the latest sightings.
             </Text>
             <TextField

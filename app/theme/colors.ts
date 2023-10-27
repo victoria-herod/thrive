@@ -26,7 +26,7 @@ const palette = {
   accent200: "#D5D996",
   accent300: "#CFD487",
   accent400: "#C9CE78",
-  accent500: "#C2C968",
+  accent500: "#D7E148",
 
   angry100: "#F2D6CD",
   angry500: "#C03403",
@@ -54,7 +54,7 @@ export const colors = {
   /**
    * Secondary text information.
    */
-  textDim: palette.neutral600,
+  textDim: palette.neutral900,
   /**
    * The default color of the screen background.
    */
@@ -80,5 +80,6 @@ export const colors = {
    *
    */
   errorBackground: palette.angry100,
-  secondary: palette.secondary500
+  secondary: palette.secondary500,
+  accent: palette.accent500
 }
