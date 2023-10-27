@@ -23,7 +23,6 @@ import { useSafeAreaInsetsStyle } from "../utils/useSafeAreaInsetsStyle"
 import { DrawerIconButton } from "../components/DrawerIconButton"
 import { Header } from '../components/Header';
 import { Button } from '../components/Button';
-import { AppHeader } from "../components/AppHeader";
 
 import { AppStackScreenProps } from "../navigators" // @demo remove-current-line
 import ja from "date-fns/locale/ja/index"
@@ -57,8 +56,6 @@ export const AboutScreen: FC<AboutScreenProps> =
 
     const $drawerInsets = useSafeAreaInsetsStyle(["top"])
 
-    const [location, setLocation] = useState('');
-
     return (
       <DrawerLayout
         ref={drawerRef}
@@ -79,17 +76,35 @@ export const AboutScreen: FC<AboutScreenProps> =
         }}
         renderNavigationView={() => (
           <View style={[$drawer, $drawerInsets]}>
-            <View style={$logoContainer}>
-              <Image source={logo} style={$logoImage} />
+            <View style={{ display: 'flex', flexDirection: 'row', paddingTop: spacing.xl, paddingBottom: spacing.xl }}>
+              <View style={$logoContainer}>
+                <Image source={logo} style={$logoImage} />
+              </View>
+              <Text
+                size="xxl" 
+                text="Thrive"
+                style={{fontStyle: "italic"}}
+              />
             </View>
-            <Text>Thrive</Text>
+            <Button
+              text="Home"
+              onPress={() => {
+                navigation.navigate('Welcome')
+              }}
+            />
+            <Button
+              text="About"
+              onPress={() => {
+                navigation.navigate('About')
+              }}
+            />
           </View>
         )}
       >
         <Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$screenContainer}>
           <DrawerIconButton onPress={toggleDrawer} {...{ open, progress }} />
 
-          <AppHeader
+          <Header
             text="Thrive"
             image={logo}
           /> 
@@ -97,15 +112,6 @@ export const AboutScreen: FC<AboutScreenProps> =
           <Text style={{ margin: spacing.sm }}>
             This app provides the exciting opportunity to get acquainted with the natural treasures of your local environment. Ever wondered what species that bird int the tree at the end of the garden is, or been fascinated by that bug that tends to pop up in summer? Enter your location below to find out about the species you share your locality with, and access the latest sightings.
           </Text>
-
-          <TextField onChangeText={textLocation => {setLocation(textLocation)}}/>
-          <Button
-            text="Submit location"
-            onPress={() => navigation.navigate('SpeciesDirectory', {
-              Location: location,
-            })}
-            disabled={location.length === 0}
-          />
         </Screen>
       </DrawerLayout>
     )

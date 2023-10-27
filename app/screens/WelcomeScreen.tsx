@@ -24,9 +24,8 @@ import { useSafeAreaInsetsStyle } from "../utils/useSafeAreaInsetsStyle"
 import { DrawerIconButton } from "../components/DrawerIconButton"
 import { Header } from '../components/Header';
 import { Button } from '../components/Button';
-import { AppHeader } from "../components/AppHeader";
 
-import { AppStackScreenProps } from "../navigators" // @demo remove-current-line
+import { AppStackScreenProps } from "../navigators"
 import ja from "date-fns/locale/ja/index"
 
 interface WelcomeScreenProps extends AppStackScreenProps<"Welcome"> {}
@@ -91,6 +90,12 @@ export const WelcomeScreen: FC<WelcomeScreenProps> =
               />
             </View>
             <Button
+              text="Home"
+              onPress={() => {
+                navigation.navigate('Welcome')
+              }}
+            />
+            <Button
               text="About"
               onPress={() => {
                 navigation.navigate('About')
@@ -101,29 +106,26 @@ export const WelcomeScreen: FC<WelcomeScreenProps> =
       >
         <Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$screenContainer}>
           <DrawerIconButton onPress={toggleDrawer} {...{ open, progress }} />
-
-          <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
-          <AppHeader
-            text="Thrive"
-            image={logo}
-          /> 
-
-          <Text style={{ margin: spacing.sm }}>
-            Here you have found a tool that provides the exciting opportunity to get acquainted with the natural treasures of your local environment. Ever wondered about that cool bird in the tree at the end of the garden, or been fascinated by the many strands of spring blooms? Enter your location below to find out about the species you share your locality with, and access the latest sightings.
-          </Text>
-
-          <TextField
-            onChangeText={textLocation => {setLocation(textLocation)}}
-            placeholder="St Ives, Cornwall"
-          />
-          <Button
-            text="Submit location"
-            onPress={() => navigation.navigate('SpeciesDirectory', {
-              Location: location,
-            })}
-            disabled={location.length === 0}
-          />
-          </KeyboardAvoidingView>
+          <KeyboardAvoidingView behavior="position">
+            <Header
+              text="Thrive"
+              image={logo}
+            />
+            <Text style={{ margin: spacing.sm }}>
+              Here you have found a tool that provides the exciting opportunity to get acquainted with the natural treasures of your local environment. Ever wondered about that cool bird in the tree at the end of the garden, or been fascinated by the many strands of spring blooms? Enter your location below to find out about the species you share your locality with, and access the latest sightings.
+            </Text>
+            <TextField
+              onChangeText={textLocation => {setLocation(textLocation)}}
+              placeholder="St Ives, Cornwall"
+            />
+            <Button
+              text="Submit location"
+              onPress={() => navigation.navigate('SpeciesDirectory', {
+                Location: location,
+              })}
+              disabled={location.length === 0}
+            />
+          </KeyboardAvoidingView>  
         </Screen>
       </DrawerLayout>
     )
@@ -137,18 +139,6 @@ const $screenContainer: ViewStyle = {
 const $drawer: ViewStyle = {
   backgroundColor: colors.background,
   flex: 1,
-}
-
-const $flatListContentContainer: ViewStyle = {
-  paddingHorizontal: spacing.lg,
-}
-
-const $sectionListContentContainer: ViewStyle = {
-  paddingHorizontal: spacing.lg,
-}
-
-const $heading: ViewStyle = {
-  marginBottom: spacing.xxxl,
 }
 
 const $logoImage: ImageStyle = {

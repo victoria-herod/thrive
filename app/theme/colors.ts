@@ -35,23 +35,6 @@ const palette = {
   overlay50: "rgba(25, 16, 21, 0.5)",
 } as const
 
-// const palette = {
-//   neutral100: "#6AAB81",
-
-//   primary100: "#2B3C2A",
-
-
-//   secondary100: "#235789",
-//   secondary200: "#24A6A7",
-
-
-//   accent100: "#C2C968",
-
-
-//   overlay20: "rgba(25, 16, 21, 0.2)",
-//   overlay50: "rgba(25, 16, 21, 0.5)",
-// } as const
-
 export const colors = {
   /**
    * The palette is available to use, but prefer using the name.
@@ -97,4 +80,5 @@ export const colors = {
    *
    */
   errorBackground: palette.angry100,
+  secondary: palette.secondary500
 }
