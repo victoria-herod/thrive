@@ -29,6 +29,7 @@ import { colors } from "app/theme"
 export type AppStackParamList = {
   Welcome: undefined
   SpeciesDirectory: {data: Location}
+  About: undefined
 }
 
 /**
@@ -66,6 +67,10 @@ const AppStack = observer(function AppStack() {
       <Stack.Screen
         name="SpeciesDirectory"
         component={Screens.SpeciesDirectoryScreen}
+      />
+      <Stack.Screen
+        name="About"
+        component={Screens.AboutScreen}
       />
     </Stack.Navigator>
   )

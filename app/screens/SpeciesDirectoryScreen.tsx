@@ -21,6 +21,7 @@ import { colors, spacing } from "../theme"
 import { useSafeAreaInsetsStyle } from "../utils/useSafeAreaInsetsStyle"
 import { DrawerIconButton } from "../components/DrawerIconButton"
 import { Button } from "../components/Button";
+import { AppHeader } from "../components/AppHeader";
 
 import { AppStackScreenProps } from "../navigators" // @demo remove-current-line
 import ja from "date-fns/locale/ja/index"
@@ -110,37 +111,40 @@ export const SpeciesDirectoryScreen: FC<SpeciesDirectoryScreenProps> =
         }}
         renderNavigationView={() => (
           <View style={[$drawer, $drawerInsets]}>
-            <View style={{ display: 'flex', flexDirection: 'row', paddingTop: 30, paddingBottom: 30, borderBottomWidth: 2 }}>
+            <View style={{ display: 'flex', flexDirection: 'row', paddingTop: spacing.xl, paddingBottom: spacing.xl }}>
               <View style={$logoContainer}>
                 <Image source={logo} style={$logoImage} />
               </View>
-            <Text
-              size="xxl" 
-              text="Thrive"
-              style={{fontStyle: "italic"}}
-            />
+              <Text
+                size="xxl" 
+                text="Thrive"
+                style={{fontStyle: "italic"}}
+              />
             </View>
             <Button
               text="Restart"
-              onPress={() => navigation.navigate('Welcome')}
-              disabled={location.length === 0}
+              onPress={() => {
+                navigation.navigate('Welcome')
+                setLocation('');
+              }}
+            />
+            <Button
+              text="About"
+              onPress={() => {
+                navigation.navigate('About')
+              }}
             />
           </View>
         )}
       >
         <Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$screenContainer}>
           <DrawerIconButton onPress={toggleDrawer} {...{ open, progress }} />
-          <Text
-            onPress={() => {
-              navigation.navigate('Welcome');
-              setLocation('');
-            }}
-          >
-            Home!
-          </Text>
-          <Text>Wildlife App SpeciesDirectory Screen</Text>
-          <Text>Species in {location}, {userLatitude} {userLongitude}</Text>
-          <Text>~~~</Text>
+
+          <AppHeader
+            text="Thrive"
+            image={logo}
+          />
+          <Text>The enchanting creatures of... {location}</Text>
 
           <View>
           {localSpecies.length === 0 ? (
