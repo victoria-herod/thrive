@@ -11,7 +11,8 @@ import {
   View,
   ViewStyle,
   TouchableOpacity,
-  ListRenderItem
+  ListRenderItem,
+  Linking
 } from "react-native"
 import { DrawerLayout, DrawerState, TextInput } from "react-native-gesture-handler"
 import { useSharedValue, withTiming } from "react-native-reanimated"
@@ -110,7 +111,10 @@ export const AboutScreen: FC<AboutScreenProps> =
           /> 
 
           <Text style={{ margin: spacing.sm }}>
-            Soon to be populated...
+            Thrive is an informational app for nature enthusiasts or those that want to achieve that status. By entering a post code, town, country, or any other kind of geographical reference, you can discover the fauna, flora and fungi that inhabit that area and access the latest sightings. Whether entering a current address or a place 2,000 miles away seen only in a Lonely Planet guide, Thrive provides a window into the array of life in any part of the world.
+          </Text>
+          <Text style={{ margin: spacing.sm }}>
+            My name is Victoria, and I created this app as part of my self-led training at <Text style={{fontWeight: "900"}} onPress={() => Linking.openURL('https://www.happyporch.com/')}>HappyPorch</Text> to help 'unlock' knowledge of wildlife, and to spark appreciation for our unbelievably cool planet. My hope is that an enhanced sense of the magic surrounding us can create a stepping stone into more sustainable and circular ways of living.
           </Text>
         </Screen>
       </DrawerLayout>
