@@ -1,4 +1,4 @@
-package com.wildlifeapp;
+package com.happyporch.thrive;
 
 import android.app.Application;
 import android.content.res.Configuration;

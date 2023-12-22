@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "WildlifeApp.app"
-               BlueprintName = "WildlifeApp"
-               ReferencedContainer = "container:WildlifeApp.xcodeproj">
+               BuildableName = "Thrive.app"
+               BlueprintName = "Thrive"
+               ReferencedContainer = "container:Thrive.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "WildlifeAppTests.xctest"
-               BlueprintName = "WildlifeAppTests"
-               ReferencedContainer = "container:WildlifeApp.xcodeproj">
+               BuildableName = "ThriveTests.xctest"
+               BlueprintName = "ThriveTests"
+               ReferencedContainer = "container:Thrive.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "WildlifeApp.app"
-            BlueprintName = "WildlifeApp"
-            ReferencedContainer = "container:WildlifeApp.xcodeproj">
+            BuildableName = "Thrive.app"
+            BlueprintName = "Thrive"
+            ReferencedContainer = "container:Thrive.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "WildlifeApp.app"
-            BlueprintName = "WildlifeApp"
-            ReferencedContainer = "container:WildlifeApp.xcodeproj">
+            BuildableName = "Thrive.app"
+            BlueprintName = "Thrive"
+            ReferencedContainer = "container:Thrive.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

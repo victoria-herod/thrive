@@ -1,0 +1,32 @@
+{
+  "cli": {
+    "version": ">= 5.9.2"
+  },
+  "build": {
+    "development": {
+      "distribution": "internal",
+      "android": {
+        "gradleCommand": ":app:assembleDebug",
+        "credentialsSource": "local"
+      },
+      "ios": {
+        "buildConfiguration": "Debug"
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "credentialsSource": "local",
+        "gradleCommand": ":app:assembleRelease"
+      }
+    },
+    "production": {
+      "android": {
+        "credentialsSource": "remote"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

@@ -35,12 +35,12 @@ android_library(
 
 android_build_config(
     name = "build_config",
-    package = "com.wildlifeapp",
+    package = "com.happyporch.thrive",
 )
 
 android_resource(
     name = "res",
-    package = "com.wildlifeapp",
+    package = "com.happyporch.thrive",
     res = "src/main/res",
 )
 

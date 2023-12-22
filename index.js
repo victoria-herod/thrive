@@ -11,5 +11,5 @@ function IgniteApp() {
   return <App hideSplashScreen={RNBootSplash.hide} />
 }
 
-AppRegistry.registerComponent("WildlifeApp", () => IgniteApp)
+AppRegistry.registerComponent("Thrive", () => IgniteApp)
 export default App

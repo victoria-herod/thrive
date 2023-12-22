@@ -113,13 +113,13 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.wildlifeapp"
+    namespace "com.happyporch.thrive"
     defaultConfig {
-        applicationId "com.wildlifeapp"
+        applicationId "com.happyporch.thrive"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 3
+        versionName "1.0.2"
     }
 
     splits {

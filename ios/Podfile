@@ -40,7 +40,7 @@ elsif podfile_properties.key?('ios.flipper') then
   end
 end
 
-target 'WildlifeApp' do
+target 'Thrive' do
   use_expo_modules!
   config = use_native_modules!
 
@@ -64,7 +64,7 @@ target 'WildlifeApp' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'WildlifeAppTests' do
+  target 'ThriveTests' do
     inherit! :complete
     # Pods for testing
   end

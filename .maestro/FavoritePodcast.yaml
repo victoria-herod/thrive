@@ -1,6 +1,6 @@
 # flow: run the login flow and then navigate to the demo podcast list screen, favorite a podcast, and then switch the list to only be favorites.
 
-appId: com.wildlifeapp
+appId: com.happyporch.thrive
 env:
   TITLE: "RNR 257 - META RESPONDS! How can we improve React Native, part 2"
   FAVORITES_TEXT: "Switch on to only show favorites"
